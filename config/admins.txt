@@ -1,0 +1,3 @@
+drcheet0 = Host
+
+eluf_elof = Game Master
