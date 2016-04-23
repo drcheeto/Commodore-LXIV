@@ -125,6 +125,81 @@
 			message = "<B>[src]</B> raises an eyebrow."
 			m_type = 1
 
+		if ("fart")
+			var/obj/item/organ/internal/butt/B = locate() in internal_organs
+			if(!B)
+				src << "\red You don't have a butt!"
+				return
+			var/lose_butt = prob(6)
+			for(var/mob/living/M in get_turf(src))
+				if(M == src)
+					continue
+				if(lose_butt)
+					message = "<span class='danger'><b>[src]</b>'s ass hits <b>[M]</b> in the face!</span>"
+					M.apply_damage(15,"brute","head")
+					add_logs(src, M, "farted on", object=null, addition=" (DAMAGE DEALT: 15)")
+				else
+					message = "<span class='danger'><b>[src]</b> farts in <b>[M]</b>'s face!</span>"
+			if(!message)
+				message = "<B>[src]</B> [pick(
+					"rears up and lets loose a fart of tremendous magnitude!",
+					"farts!",
+					"toots.",
+					"harvests methane from uranus at mach 3!",
+					"assists global warming!",
+					"farts and waves their hand dismissively.",
+					"farts and pretends nothing happened.",
+					"is a <b>farting</b> motherfucker!",
+					"<B><font color='red'>f</font><font color='blue'>a</font><font color='red'>r</font><font color='blue'>t</font><font color='red'>s</font></B>")]"
+			spawn(0)
+				var/obj/item/weapon/storage/book/bible/Y = locate() in get_turf(loc)
+				if(istype(Y))
+					var/obj/effect/lightning/L = new(get_turf(loc))
+					L.start()
+					playsound(Y,'sound/effects/thunder.ogg', 90, 1)
+					spawn(10)
+						gib()
+
+				B = locate() in internal_organs
+				if(B.contents.len)
+					var/obj/item/O = pick(B.contents)
+					var/turf/location = get_turf(B)
+					if(istype(O, /obj/item/weapon/lighter))
+						var/obj/item/weapon/lighter/G = O
+						if(G.lit && location)
+							new/obj/effect/hotspot(location)
+							playsound(src, 'sound/misc/fart.ogg', 50, 1, 5)
+					else if(istype(O, /obj/item/weapon/weldingtool))
+						var/obj/item/weapon/weldingtool/J = O
+						if(J.welding == 1 && location)
+							new/obj/effect/hotspot(location)
+							playsound(src, 'sound/misc/fart.ogg', 50, 1, 5)
+					else if(istype(O, /obj/item/weapon/bikehorn) || istype(O, /obj/item/weapon/bikehorn/rubberducky))
+						playsound(src, 'sound/items/bikehorn.ogg', 50, 1, 5)
+					else if(istype(O, /obj/item/device/megaphone))
+						playsound(src, 'sound/misc/fartmassive.ogg', 75, 1, 5)
+					else
+						playsound(src, 'sound/misc/fart.ogg', 50, 1, 5)
+					/*if(prob(33))
+						O.loc = get_turf(src)
+						B.contents -= O
+						B.stored -= O.itemstorevalue*/
+				else
+					playsound(src, 'sound/misc/fart.ogg', 50, 1, 5)
+				sleep(1)
+				if(lose_butt)
+					/*for(var/obj/item/O in B.contents)
+						O.loc = get_turf(src)
+						B.contents -= O
+						B.stored -= O.itemstorevalue*/
+					B.Remove(src)
+					B.loc = get_turf(src)
+					new /obj/effect/decal/cleanable/blood(loc)
+					nutrition -= rand(15, 30)
+					visible_message("\red <b>[src]</b> blows their ass off!", "\red Holy shit, your butt flies off in an arc!")
+				else
+					nutrition -= rand(5, 25)
+
 		if ("flap","flaps")
 			if (!src.restrained())
 				message = "<B>[src]</B> flaps \his wings."
