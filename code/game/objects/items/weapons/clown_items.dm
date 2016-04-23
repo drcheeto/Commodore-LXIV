@@ -133,3 +133,30 @@
 	icon_state = "air_horn"
 	honksound = 'sound/items/AirHorn2.ogg'
 	cooldowntime = 50
+
+/obj/item/weapon/bikehorn/kazoo
+	name = "kazoo"
+	desc = "The sounds of the pretend spirit pound in your ears, and you have a strong urge to play the kazoo."
+	icon = 'icons/obj/musician.dmi'
+	icon_state = "kazoo"
+	honksound = 'sound/custom/kazoo1.ogg'
+	cooldowntime = 50
+
+/obj/item/weapon/bikehorn/kazoo/suicide_act(mob/user)
+	user.visible_message("<span class='suicide'>[user] solemnly points the horn at \his temple! It looks like \he's trying to commit suicide..</span>")
+	playsound(src.loc, pick('sound/custom/kazoo1.ogg', 'sound/custom/kazoo2.ogg', 'sound/custom/kazoo3.ogg', 'sound/custom/kazoo4.ogg'), 50, 1)
+	return (BRUTELOSS)
+
+/obj/item/weapon/bikehorn/kazoo/attack(mob/living/carbon/M, mob/living/carbon/user)
+	if(!spam_flag)
+		playsound(loc, pick('sound/custom/kazoo1.ogg', 'sound/custom/kazoo2.ogg', 'sound/custom/kazoo3.ogg', 'sound/custom/kazoo4.ogg'), 50, 1, -1) //plays instead of tap.ogg!
+	return ..()
+
+/obj/item/weapon/bikehorn/kazoo/attack_self(mob/user)
+	if(!spam_flag)
+		spam_flag = 1
+		playsound(src.loc, pick('sound/custom/kazoo1.ogg', 'sound/custom/kazoo2.ogg', 'sound/custom/kazoo3.ogg', 'sound/custom/kazoo4.ogg'), 50, 1)
+		src.add_fingerprint(user)
+		spawn(cooldowntime)
+			spam_flag = 0
+	return
